@@ -178,7 +178,7 @@ body {
 // ══════════════════════════════════════════════
 // ⚙️ 설정값 (index.html과 동일하게 맞춰줘)
 // ══════════════════════════════════════════════
-var GAS_WEBHOOK_URL = 'https://script.google.com/macros/s/여기에_GAS_URL_입력/exec';
+var GAS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwSc6P13o0HCGQwa4la8MYFOnZZVPe7e6sIk1kDGiydQd-By0WGpnow_87w0Mm681bQXQ/exec';
 
 // ══════════════════════════════════════════════
 // 별 배경 생성
@@ -239,6 +239,8 @@ function completeStep(stepId) {
         paymentKey: paymentKey,
         orderId: orderId,
         amount: amount || '15900',
+        product: userData.product || '재물운', // AI가 어떤 프롬프트를 쓸지 결정함
+        phone: userData.phone || '',           // 솔라피 알림톡 발송용
         // 사용자 입력 데이터
         name: userData.name || params.get('name') || '',
         email: userData.email || params.get('email') || '',
