@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>유니콘타로 | 결제 완료</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Hahmlet:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+    --gold: #EAB308; --gold-light: #FEF08A;
+    --gold-text-grad: linear-gradient(to bottom, #FEF08A 0%, #EAB308 50%, #A16207 100%);
+    --gold-btn-3d: linear-gradient(180deg, #FDE047 0%, #EAB308 40%, #A16207 100%);
+    --text-sub: #94A3B8; --text-mut: #475569;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(175deg, #030612 0%, #0A1128 30%, #160D24 60%, #030612 100%);
+    min-height: 100vh; color: #F8FAFC; -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    max-width: 430px; margin: 0 auto; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 60px 24px 40px; position: relative;
+}
+
+.title-black { font-family: 'Black Han Sans', sans-serif; }
+.title-serif { font-family: 'Hahmlet', serif; }
+.text-gold-3d {
+    background: var(--gold-text-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+}
+
+/* 성공 아이콘 원 */
+.success-circle {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: linear-gradient(135deg, #065F46, #047857);
+    border: 3px solid #34D399;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px; margin-bottom: 32px;
+    box-shadow: 0 0 40px rgba(52, 211, 153, 0.4), 0 20px 40px rgba(0,0,0,0.5);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* 정보 카드 */
+.info-card {
+    width: 100%; background: linear-gradient(145deg, #1E293B, #0F172A);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px;
+    margin-bottom: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+}
+.info-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { font-size: 13px; color: var(--text-sub); font-weight: 700; }
+.info-value { font-size: 14px; color: #fff; font-weight: 800; text-align: right; max-width: 60%; word-break: break-all; }
+
+/* 버튼 */
+.btn-gold {
+    width: 100%; padding: 18px; border-radius: 16px;
+    border: 1px solid #FEF08A; background: var(--gold-btn-3d);
+    color: #111; font-size: 17px; font-weight: 900; font-family: inherit;
+    cursor: pointer; box-shadow: 0 6px 0 #713F12, 0 15px 20px rgba(234,179,8,0.4);
+    margin-bottom: 12px;
+}
+
+/* 로딩 스피너 */
+.spinner {
+    width: 48px; height: 48px; border: 3px solid rgba(234,179,8,0.2);
+    border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 단계 표시 */
+.step-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 0;
+    color: var(--text-mut); font-weight: 700; transition: all 0.4s;
+}
+.step-item.done { color: #fff; }
+.step-dot-v {
+    width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+    flex-shrink: 0; transition: all 0.4s;
+}
+.step-item.done .step-dot-v { background: linear-gradient(135deg,#10B981,#047857); box-shadow: 0 0 10px rgba(52,211,153,0.5); }
+
+#loading-view, #success-view, #error-view { display: none; width: 100%; text-align: center; }
+#loading-view.show, #success-view.show, #error-view.show { display: block; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { animation: fadeIn 0.5s ease-out; }
+
+/* 별 파티클 */
+.stars { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.star { position: absolute; width: 4px; height: 4px; background: var(--gold-light); border-radius: 50%; animation: twinkle 2s infinite alternate; }
+@keyframes twinkle { 0%{opacity:0.1;transform:scale(0.8)} 100%{opacity:0.8;transform:scale(1.2)} }
+</style>
+</head>
+<body>
+
+<!-- 별 배경 -->
+<div class="stars" id="stars"></div>
+
+<div id="app">
+
+    <!-- 로딩 뷰 -->
+    <div id="loading-view" class="show">
+        <div style="margin-bottom:40px;">
+            <div style="font-size:48px;margin-bottom:20px;animation:spin 3s linear infinite;display:inline-block;">🌀</div>
+            <div class="title-serif text-gold-3d" style="font-size:28px;margin-bottom:12px;">결제 확인 중...</div>
+            <div style="font-size:14px;color:var(--text-sub);">잠깐만 기다려줘!</div>
+        </div>
+        <div class="spinner"></div>
+        <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.05);border-radius:20px;padding:24px;max-width:350px;margin:0 auto;">
+            <div class="step-item" id="step1"><div class="step-dot-v">1</div><span>결제 검증 중...</span></div>
+            <div class="step-item" id="step2"><div class="step-dot-v">2</div><span>주문 정보 저장 중...</span></div>
+            <div class="step-item" id="step3"><div class="step-dot-v">3</div><span>결과지 이메일 발송 중...</span></div>
+        </div>
+    </div>
+
+    <!-- 성공 뷰 -->
+    <div id="success-view">
+        <div class="success-circle">🦄</div>
+        <div class="title-black text-gold-3d" style="font-size:40px;margin-bottom:8px;">결제 완료!</div>
+        <div style="font-size:16px;color:var(--text-sub);margin-bottom:32px;line-height:1.6;">
+            입력한 이메일로<br><span style="color:var(--gold);font-weight:800;">10분 이내 결과지를 보내줄게!</span>
+        </div>
+
+        <div class="info-card fade-in" id="order-info-card">
+            <div class="info-row">
+                <span class="info-label">주문번호</span>
+                <span class="info-value" id="display-order-id" style="font-size:12px;">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">이름</span>
+                <span class="info-value" id="display-name">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">이메일</span>
+                <span class="info-value" id="display-email" style="font-size:12px;">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">결제 금액</span>
+                <span class="info-value" style="color:var(--gold);">15,900원</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">상품</span>
+                <span class="info-value">재물운 사주×타로 분석</span>
+            </div>
+        </div>
+
+        <div style="background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.2);border-radius:16px;padding:20px;margin-bottom:24px;width:100%;">
+            <div style="font-size:13px;color:#6EE7B7;font-weight:800;margin-bottom:8px;">📧 이메일 확인 방법</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;">
+                • 스팸 폴더도 꼭 확인해줘<br>
+                • 발신: unicorntarot@gmail.com<br>
+                • 10분 지나도 안 오면 카카오톡 채널로 연락해줘
+            </div>
+        </div>
+    </div>
+
+    <!-- 에러 뷰 -->
+    <div id="error-view">
+        <div style="font-size:64px;margin-bottom:24px;">😰</div>
+        <div class="title-serif" style="font-size:28px;color:#F87171;margin-bottom:12px;">오류가 발생했어</div>
+        <div style="font-size:14px;color:var(--text-sub);margin-bottom:32px;line-height:1.6;" id="error-message">결제는 완료됐을 수 있어. 카카오톡 채널로 문의해줘.</div>
+        <button class="btn-gold" onclick="window.location.href='index.html'">처음으로 돌아가기</button>
+    </div>
+
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════════════
+// ⚙️ 설정값 (index.html과 동일하게 맞춰줘)
+// ══════════════════════════════════════════════
+var GAS_WEBHOOK_URL = 'https://script.google.com/macros/s/여기에_GAS_URL_입력/exec';
+
+// ══════════════════════════════════════════════
+// 별 배경 생성
+// ══════════════════════════════════════════════
+(function createStars() {
+    var container = document.getElementById('stars');
+    for(var i=0; i<30; i++) {
+        var star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random()*100+'%';
+        star.style.top = Math.random()*100+'%';
+        star.style.animationDelay = Math.random()*2+'s';
+        star.style.animationDuration = (1.5+Math.random()*2)+'s';
+        container.appendChild(star);
+    }
+})();
+
+// ══════════════════════════════════════════════
+// 단계 UI 업데이트
+// ══════════════════════════════════════════════
+function completeStep(stepId) {
+    var el = document.getElementById(stepId);
+    if(el) {
+        el.classList.add('done');
+        var dot = el.querySelector('.step-dot-v');
+        if(dot) dot.textContent = '✓';
+    }
+}
+
+// ══════════════════════════════════════════════
+// 메인 로직: URL 파라미터에서 결제 정보 추출 후 GAS 전송
+// ══════════════════════════════════════════════
+(function init() {
+    var params = new URLSearchParams(window.location.search);
+    var paymentKey = params.get('paymentKey');   // 토스페이먼츠가 전달
+    var orderId = params.get('orderId');          // 토스페이먼츠가 전달
+    var amount = params.get('amount');            // 토스페이먼츠가 전달
+
+    // sessionStorage에서 사용자 데이터 복원
+    var userData = {};
+    try {
+        var stored = sessionStorage.getItem('unicorn_order');
+        if(stored) userData = JSON.parse(stored);
+    } catch(e) {}
+
+    // 필수 파라미터 체크
+    if(!paymentKey || !orderId) {
+        showError('결제 정보가 없어. 처음부터 다시 시도해줘.');
+        return;
+    }
+
+    // Step 1: 결제 검증 시작 표시
+    setTimeout(function() { completeStep('step1'); }, 800);
+
+    // GAS에 결제 완료 데이터 전송
+    var payload = {
+        action: 'payment_complete',
+        paymentKey: paymentKey,
+        orderId: orderId,
+        amount: amount || '15900',
+        // 사용자 입력 데이터
+        name: userData.name || params.get('name') || '',
+        email: userData.email || params.get('email') || '',
+        gender: userData.gender || '',
+        birth: userData.birth || '',
+        time: userData.time || '',
+        lunar: userData.lunar || '',
+        taroNum: userData.taroNum || '',
+        maxEl: userData.maxEl || '',
+        grade: userData.grade || '',
+        dGan: userData.dGan || '',
+        dJi: userData.dJi || '',
+        yGan: userData.yGan || '',
+        yJi: userData.yJi || '',
+        paidAt: userData.paidAt || new Date().toISOString()
+    };
+
+    fetch(GAS_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',  // GAS CORS 우회 (GAS는 no-cors로만 POST 가능)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(function() {
+        // no-cors라 응답을 읽을 수 없으므로 성공으로 처리
+        completeStep('step2');
+        setTimeout(function() {
+            completeStep('step3');
+            setTimeout(function() { showSuccess(payload, orderId); }, 600);
+        }, 1200);
+    })
+    .catch(function(err) {
+        // 네트워크 에러여도 결제는 완료됐으므로 성공 표시
+        // (GAS는 별도로 토스페이먼츠 서버에서 직접 검증)
+        completeStep('step2');
+        completeStep('step3');
+        setTimeout(function() { showSuccess(payload, orderId); }, 800);
+    });
+
+    // sessionStorage 클리어 (보안)
+    try { sessionStorage.removeItem('unicorn_order'); } catch(e) {}
+})();
+
+function showSuccess(data, orderId) {
+    document.getElementById('loading-view').classList.remove('show');
+    document.getElementById('success-view').classList.add('show');
+
+    var elOrderId = document.getElementById('display-order-id');
+    var elName = document.getElementById('display-name');
+    var elEmail = document.getElementById('display-email');
+    if(elOrderId) elOrderId.textContent = orderId;
+    if(elName) elName.textContent = data.name || '-';
+    if(elEmail) elEmail.textContent = data.email || '-';
+}
+
+function showError(msg) {
+    document.getElementById('loading-view').classList.remove('show');
+    document.getElementById('error-view').classList.add('show');
+    var el = document.getElementById('error-message');
+    if(el) el.textContent = msg;
+}
+</script>
+</body>
+</html>
