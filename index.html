@@ -385,7 +385,7 @@ html, body {
 <div id="app">
 
 <canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; display:none;"></canvas>
-<div id="live-toast">김** 님이 14초 전 구매하셨습니다.</div>
+<div id="live-toast">김** 님 외 14명이 보고있어요!</div>
 
 <!-- ★ 추가: 결제 로딩 오버레이 -->
 <div id="pay-loading">
@@ -1070,7 +1070,7 @@ function showLiveToast() {
     if(!toast || toast.classList.contains('show')) return;
     const name = toastNames[Math.floor(Math.random()*toastNames.length)];
     const sec = Math.floor(Math.random()*59)+1;
-    toast.innerText = `${name} 님이 ${sec}초 전 구매하셨습니다! 🎉`;
+    toast.innerText = `${name} 님 외 ${sec}명이 보고있어요! 🎉`;
     toast.classList.add('show');
     setTimeout(() => { toast.classList.remove('show'); }, 3000);
 }
