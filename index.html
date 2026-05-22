@@ -1157,7 +1157,7 @@ function goPay() {
             + '&taroNum=' + encodeURIComponent(S.saju ? S.saju.taroNum : 1)
             + '&maxEl=' + encodeURIComponent(S.saju ? S.saju.maxEl : '')
             + '&grade=' + encodeURIComponent(S.saju ? S.saju.grade : '');
-
+console.log("successUrl:", successUrl);
         payment.requestPayment({
             method: 'CARD',
             amount: { currency: 'KRW', value: CONFIG.PRICE },
