@@ -300,7 +300,7 @@ function waitForResult(orderId, payloadData) {
     // GAS에 결제 데이터 전송 (큐 등록만 하고 즉시 반환)
     fetch(GAS_WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
     })
     .then(function(res) { return res.json(); })
