@@ -1142,33 +1142,38 @@ function goPay() {
 
     // 로딩 화면 표시
     document.getElementById('pay-loading').classList.add('show');
-
     try {
-        // 1. 토스페이먼츠 초기화
         var tossPayments = TossPayments(CONFIG.TOSS_CLIENT_KEY);
-        
-        // 2. V2 필수: payment 객체 생성 (비회원 결제로 설정)
         var payment = tossPayments.payment({ customerKey: TossPayments.ANONYMOUS });
+        
+        // ← 이거 추가
+        var successUrl = 'https://ahnty5358-create.github.io/tarot-cards/success.html'
+            + '?name=' + encodeURIComponent(S.name)
+            + '&email=' + encodeURIComponent(S.email)
+            + '&gender=' + encodeURIComponent(S.gender)
+            + '&birth=' + encodeURIComponent(S.birth)
+            + '&time=' + encodeURIComponent(S.time || '')
+            + '&lunar=' + encodeURIComponent(S.lunar)
+            + '&taroNum=' + encodeURIComponent(S.saju ? S.saju.taroNum : 1)
+            + '&maxEl=' + encodeURIComponent(S.saju ? S.saju.maxEl : '')
+            + '&grade=' + encodeURIComponent(S.saju ? S.saju.grade : '');
 
-        // 3. 결제창 띄우기 (tossPayments.가 아니라 payment. 입니다!)
         payment.requestPayment({
-            method: 'CARD', // 결제수단 (카드결제)
+            method: 'CARD',
             amount: { currency: 'KRW', value: CONFIG.PRICE },
             orderId: orderId,
             orderName: CONFIG.PRODUCT_NAME,
             customerName: S.name,
             customerEmail: S.email,
-            successUrl: CONFIG.SUCCESS_URL,
+            successUrl: successUrl,  // ← CONFIG.SUCCESS_URL 에서 변경
             failUrl: CONFIG.FAIL_URL
         }).catch(function(error) {
-            // 사용자가 결제를 취소했거나 에러가 났을 때 무한 로딩 풀기
             document.getElementById('pay-loading').classList.remove('show');
             if (error.code !== 'USER_CANCEL') {
                 alert('결제 오류: ' + error.message);
             }
         });
     } catch(err) {
-        // 클라이언트 키가 비어있거나 스크립트 자체 에러가 났을 때 무한 로딩 풀기
         document.getElementById('pay-loading').classList.remove('show');
         alert('결제 모듈을 불러오는 중 오류가 발생했습니다. (' + err.message + ')');
     }
