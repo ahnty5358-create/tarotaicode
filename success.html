@@ -299,29 +299,23 @@ function waitForResult(orderId, payloadData) {
 
     // GAS에 결제 데이터 전송 (큐 등록만 하고 즉시 반환)
     fetch(GAS_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload),
-        redirect: 'follow' 
-    })
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-        completeStep('step2');
-        if (!data.ok) {
-            // 오류여도 결제는 완료됐으니 성공화면 + 이메일 안내
-            completeStep('step3');
-            setTimeout(function() { showSuccess(payload, orderId); }, 500);
-            return;
-        }
-        // 큐 등록 성공 → 폴링 시작
-        waitForResult(orderId, payload);
-    })
-    .catch(function(err) {
-        // fetch 자체 실패 (네트워크) → 결제는 완료됐으니 성공화면
-        completeStep('step2');
-        completeStep('step3');
-        setTimeout(function() { showSuccess(payload, orderId); }, 500);
-    });
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload),
+    redirect: 'follow'
+})
+.then(function(res) { return res.json(); })
+.then(function(data) {
+    completeStep('step2');
+    completeStep('step3');
+    // 폴링 없이 바로 성공화면 표시
+    setTimeout(function() { showSuccess(payload, orderId); }, 500);
+})
+.catch(function(err) {
+    completeStep('step2');
+    completeStep('step3');
+    setTimeout(function() { showSuccess(payload, orderId); }, 500);
+});
 
     // sessionStorage 클리어 (보안)
     try { sessionStorage.removeItem('unicorn_order'); } catch(e) {}
