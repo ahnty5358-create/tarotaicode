@@ -1035,7 +1035,6 @@ function updateStepUI(step) {
     var meta = STEP_META[step - 1];
     var fill = document.getElementById('step-bar-fill');
     var pctText = document.getElementById('step-pct-text');
-    var labelText = document.getElementById('step-label-text');
     if (fill) fill.style.width = meta.pct + '%';
     if (pctText) pctText.textContent = meta.pct + '%';
     if (labelText) labelText.textContent = meta.label;
