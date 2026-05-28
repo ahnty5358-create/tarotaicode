@@ -575,13 +575,12 @@ html, body {
 
   <!-- 스텝 진행바 (sticky) -->
   <div class="step-progress-bar">
-    <div class="step-progress-label">
+    <div class="step-progress-label" style="justify-content: flex-end;">
   <span class="step-pct" id="step-pct-text" style="font-family:var(--font-display); font-size:22px; color:#fff;">20%</span>
 </div>
     <div class="step-bar-track">
       <div class="step-bar-fill" id="step-bar-fill" style="width:20%;"></div>
     </div>
-    <div class="step-dots" id="step-dots"></div>
   </div>
 
  
@@ -1012,18 +1011,7 @@ var STEP_META = [
     {pct:100, label:'양력/음력 선택'}
 ];
 
-// 스텝 점(dot) 초기화
-function initStepDots() {
-    var container = document.getElementById('step-dots');
-    if (!container) return;
-    container.innerHTML = '';
-    for (var i = 1; i <= TOTAL_STEPS; i++) {
-        var dot = document.createElement('div');
-        dot.className = 'step-dot-item' + (i === currentStep ? ' active' : (i < currentStep ? ' done' : ''));
-        dot.id = 'sdot-' + i;
-        container.appendChild(dot);
-    }
-}
+
 
 function updateStepUI(step) {
     // 카드 전환
@@ -1039,14 +1027,7 @@ function updateStepUI(step) {
     if (pctText) pctText.textContent = meta.pct + '%';
     if (labelText) labelText.textContent = meta.label;
 
-    // 점(dot)
-    for (var i = 1; i <= TOTAL_STEPS; i++) {
-        var dot = document.getElementById('sdot-' + i);
-        if (!dot) continue;
-        dot.className = 'step-dot-item';
-        if (i < step) dot.classList.add('done');
-        else if (i === step) dot.classList.add('active');
-    }
+  
 
     // 이전 버튼
     var prevBtn = document.getElementById('btn-prev');
