@@ -45,7 +45,7 @@ body {
     <div style="font-size:80px;margin-bottom:24px;" class="shake">😢</div>
     <div class="title-black" style="font-size:40px;color:#F87171;margin-bottom:12px;">결제 실패</div>
     <div style="font-size:16px;color:#94A3B8;margin-bottom:32px;line-height:1.6;" id="fail-msg">
-        결제가 취소됐거나 실패했어.<br>다시 시도해봐!
+        결제가 취소됐거나 실패했습니다.<br>다시 시도해주세요.
     </div>
 
     <div class="info-card" id="error-detail" style="display:none;">
@@ -65,7 +65,7 @@ body {
 
     <button class="btn-gold" onclick="goBack()">🔄 다시 결제해보기</button>
     <div style="font-size:13px;color:#475569;margin-top:12px;">
-        계속 실패한다면 카카오톡 채널 '유니콘타로'로 문의해줘
+        계속 실패한다면 카카오톡 채널 '유니콘타로'로 문의해주세요!
     </div>
 </div>
 
@@ -77,7 +77,7 @@ body {
 
     // 사용자가 직접 취소한 경우
     if(code === 'PAY_PROCESS_CANCELED') {
-        document.getElementById('fail-msg').innerHTML = '결제를 취소했어.<br>언제든 다시 도전해줘! 🦄';
+        document.getElementById('fail-msg').innerHTML = '사용자가 결제를 취소했습니다.<br>다시 시도해주세요 🦄';
         return;
     }
 
