@@ -347,7 +347,8 @@ html, body {
 /* ── 목차 ── */
 .toc-container {
     background: linear-gradient(180deg, rgba(10,17,40,0.8), rgba(3,6,18,0.5));
-    border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 32px 20px;
+    border: 1px solid rgba(255,255,255,0.05); border-radius: 0; padding: 32px 16px;
+    margin: 0 -20px;
 }
 .toc-chapter { 
     background: linear-gradient(145deg, #1E293B, #0F172A); border-left: 4px solid var(--neon-pink);
@@ -780,10 +781,10 @@ html, body {
   <div class="dramatic-line"><div class="dramatic-orb"></div></div>
 
   <div class="section-padding" style="text-align:center; padding-bottom:0;">
-      <div class="title-serif text-gold-3d" style="font-size:36px;margin-bottom:20px;"><span id="s3-name-report" class="text-gold-3d"></span>님,<br> 충분히 부자가 될 수 있는데,<br>잘 몰랐을 뿐이에요.<br></div>
-      <div style="font-size:18px;color:var(--text-sub);line-height:1.7;font-family:var(--font-body);">
-        걱정하지 마세요<br>
-        <span style="color:var(--gold);font-weight:700;font-size:22px;">제가 알려드릴게요.</span>
+      <div class="title-serif text-gold-3d" style="font-size:36px;margin-bottom:20px;"><span id="s3-name-report" class="text-gold-3d"></span>님은 <br> 충분히 부자가 될 수 있는데,<br>잘 몰랐을 뿐이에요.<br><br><br><br></div>
+      <div style="font-size:22px;color:var(--text-sub);line-height:1.7;font-family:var(--font-body);">
+        당신 인생의 반전,<br>
+        <span style="color:var(--gold);font-weight:700;font-size:24px;">제가 알려드릴게요.</span>
       </div>
   </div>
 
@@ -909,10 +910,10 @@ html, body {
     <div class="title-serif text-gold-3d" style="font-size:36px;text-align:center;margin-bottom:50px;line-height:1.3;">다른 곳이랑<br>마음껏 비교해 보세요</div>
     <div style="display:flex; gap:16px; align-items:stretch;">
       <div style="flex:1; background:linear-gradient(180deg, #1E293B, #0F172A); border-radius:20px; padding:30px 16px; text-align:center; box-shadow:inset 0 4px 10px rgba(0,0,0,0.8); opacity:0.8;">
-        <div style="font-size:14px;color:var(--text-mut);margin-bottom:12px;font-family:var(--font-body);">일반 신점/사주</div>
-        <div class="title-serif" style="font-size:22px;color:var(--text-sub);margin-bottom:20px;">평균 5~10만원</div>
+        <div style="font-size:14px;color:var(--text-sub);margin-bottom:12px;font-family:var(--font-body);">일반 신점/사주</div>
+        <div class="title-serif" style="font-size:22px;color:var(--text-sub);margin-bottom:20px;">평균 <br>5~10만원</div>
         <div style="height:1px;background:rgba(255,255,255,.05);margin:0 0 20px;"></div>
-        <div style="display:flex;flex-direction:column;gap:16px;font-size:13px;color:rgba(255,255,255,0.85);font-family:var(--font-body);"><div>❌ 직감에 의존한 풀이</div><div>❌ 일방적 사주 풀이</div><div>❌ 1회성 상담, 다시보기 불가</div></div>
+        <div style="display:flex;flex-direction:column;gap:16px;font-size:13px;color:rgba(255,255,255,0.85);font-family:var(--font-body);"><div>❌ 직감에 의존</div><div>❌ 일방적 사주 풀이</div><div>❌ 1회성 상담,<br> 다시보기 불가</div></div>
       </div>
       <div style="flex:1.2; background:linear-gradient(180deg, #1E3A8A, #0F172A); border:1px solid #3B82F6; border-radius:20px; padding:30px 16px; text-align:center; box-shadow:0 20px 40px rgba(29, 78, 216, 0.4), inset 0 2px 4px rgba(255,255,255,0.2); position:relative; transform:scale(1.05); z-index:2;">
         <div style="position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:var(--gold-grad-3d); color:#111; font-size:12px; font-weight:700; padding:6px 20px; border-radius:20px; font-family:var(--font-body);">강력 추천</div>
@@ -920,7 +921,7 @@ html, body {
         <div style="font-size:40px; margin-bottom:4px;">🗝️</div>
         <div class="title-serif text-gold-3d" style="font-size:32px;margin-bottom:16px;">15,900원</div>
         <div style="height:1px;background:linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.5), transparent);margin:0 0 20px;"></div>
-        <div style="display:flex;flex-direction:column;gap:16px;font-size:13px;color:#fff;font-family:var(--font-body);"><div>✅ 사주 × 타로 동시분석</div><div>✅ 평생 소장 가능</div><div>✅ 약 7,000자 역대급 분량</div></div>
+        <div style="display:flex;flex-direction:column;gap:16px;font-size:13px;color:#fff;font-family:var(--font-body);"><div>✅ 사주 × 타로 동시분석</div><div>✅ 평생 소장 가능</div><div>✅ 약 12,000자 </br>역대급 분량</div></div>
       </div>
     </div>
   </div>
@@ -1358,7 +1359,7 @@ function buildPage2() {
     el=document.getElementById('s2-name-circle'); if(el) el.innerHTML=name+'<span style="font-size:20px;">님의</span>';
     el=document.getElementById('s2-empathy-title'); if(el) el.innerHTML=name+'님,<br>혹시 이런 생각 해보신 적 <br>있으신가요?';
     el=document.getElementById('s3-name-report'); if(el) el.textContent=name;
-    var hashtags={'목':'#꾸준한_성장형 🌱','화':'#열정폭발_투자형 🔥','토':'#안정제일_부동산형 🪨','금':'#날카로운_결단력형 ⚔️','수':'#유연한_사업가형 💧'};
+    var hashtags={'목':'#꾸준한_성장형','화':'#열정폭발_투자형','토':'#안정제일_부동산형','금':'#날카로운_결단력형','수':'#유연한_사업가형'};
     el=document.getElementById('saju-hashtag'); if(el) el.innerText=hashtags[saju.maxEl]||'#숨겨진_재벌형 💎';
     var orbRow=document.getElementById('orb-row');
     var pillars=[{gan:saju.tGan,ji:saju.tJi,label:'시주'},{gan:saju.dGan,ji:saju.dJi,label:'일주',isDay:true},{gan:saju.mGan,ji:saju.mJi,label:'월주'},{gan:saju.yGan,ji:saju.yJi,label:'년주'}];
