@@ -647,8 +647,25 @@ html, body {
       </div>
     </div>
 
-    <!-- STEP 5: 양력/음력 -->
+      <!-- STEP 5: 핸드폰 번호 (선택) -->
     <div class="step-card" id="step-5">
+      <span class="step-emoji">📱</span>
+      <div class="step-heading">카카오 알림을<br>받아보실래요?</div>
+      <div class="step-sub">
+        완료되면 카카오톡으로<br>알려드려요! <span style="color:var(--gold);font-weight:700;">(선택사항)</span>
+      </div>
+      <label class="lbl">핸드폰 번호</label>
+      <input class="inp" id="i-phone" type="tel" placeholder="예) 01012345678" maxlength="11">
+      <div class="error-msg" id="err-phone">⚠️ 올바른 핸드폰 번호를 입력해 주세요!</div>
+      <div style="margin-top:12px; padding:14px 16px; background:rgba(234,179,8,0.06); border:1px solid rgba(234,179,8,0.2); border-radius:14px;">
+        <div style="font-family:var(--font-body); font-size:13px; color:rgba(255,255,255,0.6); line-height:1.7;">
+          📌 입력하지 않으면 이메일로 발송돼요
+        </div>
+      </div>
+    </div>
+      
+   <!-- STEP 6: 양력/음력 -->
+    <div class="step-card" id="step-6">
       <span class="step-emoji">🌙</span>
       <div class="step-heading">마지막이에요!<br>양력인가요, 음력인가요?</div>
       <div class="step-sub">생년월일 기준을 선택해 주세요</div>
@@ -996,19 +1013,19 @@ var CONFIG = {
 };
 
 // ── 상태 ──
-var S = {name:'', email:'', gender:'여', birth:'', time:'', lunar:'양력', saju:null};
-
+var S = {name:'', email:'', gender:'여', birth:'', time:'', lunar:'양력', phone:'', saju:null};
 // ══════════════════════════════════════════
 // 스텝 폼 로직
 // ══════════════════════════════════════════
-var TOTAL_STEPS = 5;
+var TOTAL_STEPS = 6;
 var currentStep = 1;
 
 var STEP_META = [
-    {pct:20, label:'이름 입력'},
-    {pct:40, label:'이메일 입력'},
-    {pct:60, label:'성별 선택'},
-    {pct:80, label:'생년월일 입력'},
+    {pct:17, label:'이름 입력'},
+    {pct:33, label:'이메일 입력'},
+    {pct:50, label:'성별 선택'},
+    {pct:67, label:'생년월일 입력'},
+    {pct:83, label:'핸드폰 입력'},
     {pct:100, label:'양력/음력 선택'}
 ];
 
@@ -1104,6 +1121,19 @@ function nextStep() {
         S.time = document.getElementById('i-time').value;
     }
 
+    if (currentStep === 5) {
+        var phone = document.getElementById('i-phone').value.replace(/[^0-9]/g, '');
+        // 선택사항: 입력했으면 형식 체크, 안했으면 패스
+        if (phone && phone.length > 0 && phone.length < 10) {
+            var err = document.getElementById('err-phone');
+            var inp = document.getElementById('i-phone');
+            if(inp) inp.classList.add('error');
+            if(err) err.classList.add('show');
+            return;
+        }
+        S.phone = phone || '';
+    }
+    
     if (currentStep === TOTAL_STEPS) {
         // 마지막 스텝: 분석 시작
         runAnalysis();
@@ -1161,6 +1191,14 @@ document.getElementById('i-birth').addEventListener('input', function(e) {
     // 입력 시 에러 제거
     e.target.classList.remove('error');
     var err = document.getElementById('err-birth');
+    if(err) err.classList.remove('show');
+});
+
+    document.getElementById('i-phone').addEventListener('input', function(e){
+    var val = e.target.value.replace(/[^0-9]/g, '').substring(0,11);
+    e.target.value = val;
+    e.target.classList.remove('error');
+    var err = document.getElementById('err-phone');
     if(err) err.classList.remove('show');
 });
 
