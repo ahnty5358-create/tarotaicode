@@ -602,9 +602,9 @@ html, body {
     </div>
 
     <!-- STEP 2: 이메일 -->
-    <div class="step-card" id="step-2">
+    <div class="step-card" id="step-5">
       <span class="step-emoji">📩</span>
-      <div class="step-heading">결과지 받을<br>이메일을 알려주세요</div>
+      <div class="step-heading">결과페이지를 받을<br>이메일을 알려주세요</div>
       <div class="step-sub">분석 완료 후 해당 주소로<br>결과지를 보내드려요!</div>
       <label class="lbl">이메일 주소</label>
       <input class="inp" id="i-email" type="email" placeholder="예) my@email.com">
@@ -612,7 +612,7 @@ html, body {
     </div>
 
     <!-- STEP 3: 성별 -->
-    <div class="step-card" id="step-3">
+    <div class="step-card" id="step-4">
       <span class="step-emoji">🌟</span>
       <div class="step-heading">성별을 선택해 주세요</div>
       <div class="step-sub">사주 분석에 활용됩니다</div>
@@ -624,7 +624,7 @@ html, body {
     </div>
 
     <!-- STEP 4: 생년월일 + 시간 -->
-    <div class="step-card" id="step-4">
+    <div class="step-card" id="step-2">
       <span class="step-emoji">🗓️</span>
       <div class="step-heading">생년월일시를 알려주세요</div>
       <div class="step-sub">정확할수록 분석 정확도가 높아져요!</div>
@@ -648,7 +648,7 @@ html, body {
     </div>
 
       <!-- STEP 5: 핸드폰 번호 (선택) -->
-    <div class="step-card" id="step-5">
+    <div class="step-card" id="step-6">
       <span class="step-emoji">📱</span>
       <div class="step-heading">카카오 알림을<br>받아보실래요?</div>
       <div class="step-sub">
@@ -1022,11 +1022,11 @@ var currentStep = 1;
 
 var STEP_META = [
     {pct:17, label:'이름 입력'},
-    {pct:33, label:'이메일 입력'},
-    {pct:50, label:'성별 선택'},
-    {pct:67, label:'생년월일 입력'},
-    {pct:83, label:'핸드폰 입력'},
-    {pct:100, label:'양력/음력 선택'}
+    {pct:33, label:'생년월일 입력'},
+    {pct:50, label:'양력/음력 선택'},
+    {pct:67, label:'성별 선택'},
+    {pct:83, label:'이메일 입력'},
+    {pct:100, label:'카카오 알림 설정'}
 ];
 
 
@@ -1097,7 +1097,45 @@ function nextStep() {
     }
 
     if (currentStep === 2) {
+        var birth = document.getElementById('i-birth').value;
+        var birthStr = birth.replace(/[^0-9]/g, '');
+        if (birthStr.length !== 8) {
+            showErr('i-birth', 'err-birth');
+            return;
+        }
+        S.birth = birth;
+        S.time = document.getElementById('i-time').value;
+    }
+
+    if (currentStep === 3) {
+        // 양력/음력은 항상 선택돼 있어요
+    }
+
+    if (currentStep === 4) {
+        // 성별도 항상 선택돼 있어요
+    }
+
+    if (currentStep === 5) {
         var email = document.getElementById('i-email').value.trim();
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!email || !emailOk) {
+            showErr('i-email', 'err-email');
+            return;
+        }
+        S.email = email;
+    }
+
+    if (currentStep === 6) {
+        var phone = document.getElementById('i-phone').value.replace(/[^0-9]/g, '');
+        if (phone && phone.length > 0 && phone.length < 10) {
+            var err = document.getElementById('err-phone');
+            var inp = document.getElementById('i-phone');
+            if(inp) inp.classList.add('error');
+            if(err) err.classList.add('show');
+            return;
+        }
+        S.phone = phone || '';
+    }
         var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         if (!email || !emailOk) {
             showErr('i-email', 'err-email');
