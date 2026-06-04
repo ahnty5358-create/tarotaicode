@@ -1467,7 +1467,7 @@ function goPay() {
         sessionStorage.setItem('unicorn_order', JSON.stringify({
             orderId:orderId, name:S.name, email:S.email, gender:S.gender,
             birth:S.birth, time:S.time, lunar:S.lunar,
-            taroNum:S.saju?S.saju.taroNum:1, maxEl:S.saju?S.saju.maxEl:'토',
+            phone:S.phone||'', taroNum:S.saju?S.saju.taroNum:1, maxEl:S.saju?S.saju.maxEl:'토',
             grade:S.saju?S.saju.grade:'상위 20%',
             dGan:S.saju?S.saju.dGan:'', dJi:S.saju?S.saju.dJi:'',
             yGan:S.saju?S.saju.yGan:'', yJi:S.saju?S.saju.yJi:'',
@@ -1488,7 +1488,7 @@ function goPay() {
             + '&lunar=' + encodeURIComponent(S.lunar)
             + '&taroNum=' + encodeURIComponent(S.saju ? S.saju.taroNum : 1)
             + '&maxEl=' + encodeURIComponent(S.saju ? S.saju.maxEl : '')
-            + '&grade=' + encodeURIComponent(S.saju ? S.saju.grade : '');
+            + '&grade=' + encodeURIComponent(S.saju ? S.saju.grade : '') + '&phone=' + encodeURIComponent(S.phone || '');
         payment.requestPayment({
             method: 'CARD',
             amount: { currency: 'KRW', value: CONFIG.PRICE },
