@@ -665,9 +665,9 @@ html, body {
     </div>
       
    <!-- STEP 6: 양력/음력 -->
-    <div class="step-card" id="step-6">
+    <div class="step-card" id="step-3">
       <span class="step-emoji">🌙</span>
-      <div class="step-heading">마지막이에요!<br>양력인가요, 음력인가요?</div>
+      <div class="step-heading">양력인가요, 음력인가요?</div>
       <div class="step-sub">생년월일 기준을 선택해 주세요</div>
       <label class="lbl">양력 / 음력</label>
       <div class="radio-row">
@@ -1136,42 +1136,7 @@ function nextStep() {
         }
         S.phone = phone || '';
     }
-        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        if (!email || !emailOk) {
-            showErr('i-email', 'err-email');
-            return;
-        }
-        S.email = email;
-    }
 
-    if (currentStep === 3) {
-        // 성별은 항상 선택돼 있어요
-    }
-
-    if (currentStep === 4) {
-        var birth = document.getElementById('i-birth').value;
-        var birthStr = birth.replace(/[^0-9]/g, '');
-        if (birthStr.length !== 8) {
-            showErr('i-birth', 'err-birth');
-            return;
-        }
-        S.birth = birth;
-        S.time = document.getElementById('i-time').value;
-    }
-
-    if (currentStep === 5) {
-        var phone = document.getElementById('i-phone').value.replace(/[^0-9]/g, '');
-        // 선택사항: 입력했으면 형식 체크, 안했으면 패스
-        if (phone && phone.length > 0 && phone.length < 10) {
-            var err = document.getElementById('err-phone');
-            var inp = document.getElementById('i-phone');
-            if(inp) inp.classList.add('error');
-            if(err) err.classList.add('show');
-            return;
-        }
-        S.phone = phone || '';
-    }
-    
     if (currentStep === TOTAL_STEPS) {
         // 마지막 스텝: 분석 시작
         runAnalysis();
