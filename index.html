@@ -1347,9 +1347,14 @@ function calcSaju(y, m, d, timeVal, lunar) {
         var dayIdx = (diffDays + 10) % 60;
         if(dayIdx < 0) dayIdx += 60;
         var dGan = GAN[dayIdx % 10], dJi = JI[dayIdx % 12];
-        var mIdx = [0,2,4,6,8,10,12,14,16,18,20,22][m-1] || 0;
-        var mGan = GAN[((mIdx+(GAN.indexOf(yGan)%5)*2)%10+10)%10] || '갑';
-        var mJi = JI[(m)%12] || '인';
+        // 절기 기준 월주 계산
+var JUNGGI_DAYS = [6,4,6,5,6,6,7,7,8,8,7,7];
+var JI_MONTH_MAP = {1:'축',2:'인',3:'묘',4:'진',5:'사',6:'오',7:'미',8:'신',9:'유',10:'술',11:'해',12:'자'};
+var sm = (d >= JUNGGI_DAYS[m-1]) ? m : (m === 1 ? 12 : m - 1);
+var mJi = JI_MONTH_MAP[sm];
+var mGanStart = [2,4,6,8,0][GAN.indexOf(yGan) % 5];
+var mGanOffset = (sm - 2 + 12) % 12;
+var mGan = GAN[(mGanStart + mGanOffset) % 10];
         var tGan = '모', tJi = '름';
         if(timeVal && timeVal !== '모름'){
             tJi = timeVal.charAt(0);
