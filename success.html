@@ -146,7 +146,7 @@ body {
             </div>
             <div class="info-row">
                 <span class="info-label">결제 금액</span>
-                <span class="info-value" style="color:var(--gold);">12,900원</span>
+                <span class="info-value" style="color:var(--gold);">9,900원</span>
             </div>
             <div class="info-row">
                 <span class="info-label">상품</span>
@@ -278,7 +278,7 @@ function waitForResult(orderId, payloadData) {
         action: 'payment_complete',
         paymentKey: paymentKey,
         orderId: orderId,
-        amount: amount || '15900',
+        amount: amount || '9900',
         product: userData.product || '재물운',
         phone: userData.phone || '',
         name: userData.name || params.get('name') || '',
