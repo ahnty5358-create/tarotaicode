@@ -299,7 +299,7 @@ html, body {
 <script>
 // ⚙️ 설정
 var CONFIG = {
-    PRODUCT_NAME: '유니콘타로 상대방 속마음 정밀 분석',
+    PRODUCT_NAME: '유니콘타로의 타로 상대방 속마음',
     PRICE: 990, // 가격 990원
     SUCCESS_URL: window.location.href,
     FAIL_URL: window.location.href
@@ -351,10 +351,6 @@ function selectTarot() {
     goPay();
 }
 
-function goPay() {
-    alert('990원 결제창으로 연결됩니다. (테스트 환경)');
-    // 실제 Toss Payments 연동 로직은 여기에 위치
-}
 
 function showP(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
