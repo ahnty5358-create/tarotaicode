@@ -299,6 +299,7 @@ html, body {
 <script>
 // ⚙️ 설정
 var CONFIG = {
+    TOSS_CLIENT_KEY: 'live_ck_EP59LybZ8BlBGE2RMMm4V6GYo7pR',
     PRODUCT_NAME: '유니콘타로의 타로 상대방 속마음',
     PRICE: 990, // 가격 990원
     SUCCESS_URL: window.location.href,
@@ -351,7 +352,64 @@ function selectTarot() {
     goPay();
 }
 
+    // ── 주문번호 생성 함수 ──
+function generateOrderId() {
+    var now = new Date();
+    var ts = now.getFullYear().toString()
+        + String(now.getMonth()+1).padStart(2,'0')
+        + String(now.getDate()).padStart(2,'0')
+        + String(now.getHours()).padStart(2,'0')
+        + String(now.getMinutes()).padStart(2,'0')
+        + String(now.getSeconds()).padStart(2,'0');
+    var rand = Math.random().toString(36).substring(2,7).toUpperCase();
+    return 'UC' + ts + rand;
+}
 
+// ── 실제 결제 호출 함수 ──
+function goPay() {
+    var orderId = generateOrderId();
+
+    // 1. 통합형 success/fail 페이지를 위한 세션 저장 (매우 중요)
+    sessionStorage.setItem('unicorn_order', JSON.stringify({
+        orderId: orderId,
+        theme: 'romance', // ★ 테마 지정 ('romance' = 보라/핑크 테마 적용됨)
+        productName: CONFIG.PRODUCT_NAME,
+        amount: CONFIG.PRICE,
+        
+        // 유저가 폼에 입력한 정보들
+        name: S.name,
+        email: S.email,
+        birth: S.birth,
+        lunar: S.lunar,
+        pName: S.pName,
+        pRel: S.pRel,
+        pBirth: S.pBirth,
+        pLunar: S.pLunar
+    }));
+
+    // 2. 토스페이먼츠 결제창 호출
+    try {
+        var tossPayments = TossPayments(CONFIG.TOSS_CLIENT_KEY); 
+        var payment = tossPayments.payment({ customerKey: TossPayments.ANONYMOUS });
+        
+        payment.requestPayment({
+            method: 'CARD',
+            amount: { currency: 'KRW', value: CONFIG.PRICE },
+            orderId: orderId,
+            orderName: CONFIG.PRODUCT_NAME,
+            customerName: S.name,
+            customerEmail: S.email,
+            successUrl: CONFIG.SUCCESS_URL,
+            failUrl: CONFIG.FAIL_URL
+        }).catch(function(error) {
+            if (error.code !== 'USER_CANCEL') {
+                alert('결제 오류: ' + error.message);
+            }
+        });
+    } catch(err) {
+        alert('결제 모듈을 불러오지 못했습니다. (' + err.message + ')');
+    }
+}
 function showP(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
