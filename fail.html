@@ -5,15 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>유니콘타로 | 결제 실패</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Hahmlet:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 🎨 통합 CSS 변수 */
 :root {
-    --gold: #EAB308; --gold-light: #FEF08A;
-    --gold-btn-3d: linear-gradient(180deg, #FDE047 0%, #EAB308 40%, #A16207 100%);
+    --bg-color-1: #030612;
+    --bg-color-2: #0A1128;
+    --bg-color-3: #160D24;
+    
+    --main-color: #EAB308;
+    --main-light: #FEF08A;
+    --main-grad: linear-gradient(180deg, #FDE047 0%, #EAB308 40%, #A16207 100%);
 }
+
 body {
     font-family: 'Noto Sans KR', sans-serif;
-    background: linear-gradient(175deg, #030612 0%, #0A1128 30%, #160D24 60%, #030612 100%);
+    background: linear-gradient(175deg, var(--bg-color-1) 0%, var(--bg-color-2) 40%, var(--bg-color-3) 100%);
     min-height: 100vh; color: #F8FAFC; -webkit-font-smoothing: antialiased;
 }
 #app {
@@ -22,66 +30,75 @@ body {
     padding: 60px 24px 40px; text-align: center;
 }
 .title-black { font-family: 'Black Han Sans', sans-serif; }
-.title-serif { font-family: 'Hahmlet', serif; }
-.btn-gold {
-    width: 100%; padding: 18px; border-radius: 16px;
-    border: 1px solid #FEF08A; background: var(--gold-btn-3d);
-    color: #111; font-size: 17px; font-weight: 900; font-family: inherit;
-    cursor: pointer; box-shadow: 0 6px 0 #713F12, 0 15px 20px rgba(234,179,8,0.4);
-    margin-bottom: 12px;
+.btn-dynamic {
+    width: 100%; padding: 18px; border-radius: 50px;
+    border: 1px solid var(--main-light); background: var(--main-grad);
+    color: #111; font-size: 17px; font-weight: 900;
+    cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,0.5), 0 15px 20px rgba(0,0,0,0.4);
+    margin-bottom: 12px; transition: 0.1s;
 }
+.btn-dynamic:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.5); }
 .info-card {
-    width: 100%; background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+    width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px; padding: 20px; margin-bottom: 28px;
 }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 .shake { animation: shake 0.5s ease-in-out; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 .fade-in { animation: fadeIn 0.5s ease-out; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
 <div id="app" class="fade-in">
-    <div style="font-size:80px;margin-bottom:24px;" class="shake">😢</div>
-    <div class="title-black" style="font-size:40px;color:#F87171;margin-bottom:12px;">결제 실패</div>
-    <div style="font-size:16px;color:#94A3B8;margin-bottom:32px;line-height:1.6;" id="fail-msg">
+    <div id="fail-icon" style="font-size:80px;margin-bottom:24px;" class="shake">😢</div>
+    <div class="title-black" id="fail-title" style="font-size:36px;color:var(--main-light);margin-bottom:12px;">결제 실패</div>
+    <div style="font-size:16px;color:#CBD5E1;margin-bottom:32px;line-height:1.6;" id="fail-msg">
         결제가 취소됐거나 실패했습니다.<br>다시 시도해주세요.
     </div>
 
     <div class="info-card" id="error-detail" style="display:none;">
-        <div style="font-size:13px;color:#FCA5A5;font-weight:700;margin-bottom:8px;">오류 내용</div>
+        <div style="font-size:13px;color:var(--main-light);font-weight:700;margin-bottom:8px;">오류 내용</div>
         <div style="font-size:13px;color:rgba(255,255,255,0.7);" id="error-msg-detail"></div>
     </div>
 
-    <div style="background:rgba(234,179,8,0.05);border:1px solid rgba(234,179,8,0.2);border-radius:16px;padding:20px;margin-bottom:28px;width:100%;">
-        <div style="font-size:13px;color:#FEF08A;font-weight:800;margin-bottom:8px;">💡 자주 발생하는 원인</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.8;text-align:left;">
-            • 카드 한도 초과<br>
-            • 카드 번호 / 비밀번호 오류<br>
-            • 결제 앱 오류 (카카오페이 등)<br>
-            • 인터넷 연결 불안정
-        </div>
-    </div>
-
-    <button class="btn-gold" onclick="goBack()">🔄 다시 결제해보기</button>
-    <div style="font-size:13px;color:#475569;margin-top:12px;">
-        계속 실패한다면 카카오톡 채널 '유니콘타로'로 문의해주세요!
-    </div>
+    <button class="btn-dynamic" id="btn-back" onclick="goBack()">🔄 다시 시도하기</button>
 </div>
 
 <script>
+// 동적 테마 설정 로직
+(function applyTheme() {
+    var stored = sessionStorage.getItem('unicorn_order');
+    var userData = stored ? JSON.parse(stored) : {};
+    var theme = userData.theme || 'wealth';
+    
+    var root = document.documentElement;
+    if (theme === 'romance') {
+        // 연애운/속마음 모드
+        root.style.setProperty('--bg-color-1', '#0F0A1E');
+        root.style.setProperty('--bg-color-2', '#1A1230');
+        root.style.setProperty('--bg-color-3', '#2D1B4D');
+        root.style.setProperty('--main-color', '#D8B4FE');
+        root.style.setProperty('--main-light', '#FBCFE8');
+        root.style.setProperty('--main-grad', 'linear-gradient(135deg, #F472B6 0%, #A855F7 50%, #60A5FA 100%)');
+        
+        document.getElementById('fail-icon').innerText = '🦄💦';
+        document.getElementById('btn-back').style.color = '#fff';
+    } else {
+        // 재물운 모드 (기본)
+        document.getElementById('fail-icon').innerText = '😢';
+    }
+})();
+
 (function init() {
     var params = new URLSearchParams(window.location.search);
     var code = params.get('code');
     var message = params.get('message');
 
-    // 사용자가 직접 취소한 경우
     if(code === 'PAY_PROCESS_CANCELED') {
-        document.getElementById('fail-msg').innerHTML = '사용자가 결제를 취소했습니다.<br>다시 시도해주세요 🦄';
+        document.getElementById('fail-msg').innerHTML = '결제를 취소하셨어요.<br>궁금증이 생기면 언제든 다시 시도해주세요! 🦄';
         return;
     }
 
-    // 에러 코드가 있으면 표시
     if(message) {
         var detail = document.getElementById('error-detail');
         var msg = document.getElementById('error-msg-detail');
@@ -91,12 +108,7 @@ body {
 })();
 
 function goBack() {
-    // 이전 페이지로 (상세페이지 index.html)
-    if(document.referrer && document.referrer.includes('index.html')) {
-        window.history.back();
-    } else {
-        window.location.href = 'index.html';
-    }
+    window.location.href = 'index.html'; // 이전 상품 상세페이지로 이동
 }
 </script>
 </body>
