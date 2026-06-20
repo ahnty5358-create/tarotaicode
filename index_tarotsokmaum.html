@@ -69,6 +69,7 @@ html, body {
     100% { filter: drop-shadow(0 0 15px rgba(244, 114, 182, 0.8)); transform: scale(1.01); }
 }
 
+/* ── 입체 버튼 ── */
 .btn-3d-unicorn {
     width: 100%; padding: 18px; border-radius: 50px;
     border: 1px solid #FBCFE8; background: var(--unicorn-grad);
@@ -82,6 +83,7 @@ html, body {
     box-shadow: 0 0 0 #7E22CE, 0 5px 10px rgba(168,85,247,0.4);
 }
 
+/* ── 폼 스타일 ── */
 .form-card {
     background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px; padding: 32px 24px; margin: 0 20px;
@@ -102,12 +104,14 @@ html, body {
     background: var(--unicorn-grad); color: #fff; border-color: transparent;
 }
 
+/* ── 진행바 ── */
 .step-progress-bar {
     position: sticky; top: 0; z-index: 50; background: rgba(15, 10, 30, 0.9); backdrop-filter: blur(10px); padding: 15px 20px;
 }
 .step-bar-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
 .step-bar-fill { height: 100%; background: var(--unicorn-grad); transition: width 0.3s; }
 
+/* ── 애니메이션 ── */
 .orb-wrapper {
     position: relative; width: 280px; height: 280px; margin: 0 auto; display: flex; align-items: center; justify-content: center;
 }
@@ -134,7 +138,7 @@ html, body {
 .page { display: none; flex-direction: column; min-height: 100vh; }
 .page.active { display: flex; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
-.section-padding { padding: 60px 20px; } /* 여백 확대 */
+.section-padding { padding: 60px 20px; }
 .img-responsive { width: 100%; display: block; margin-bottom: 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .fade-bottom {
     -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
@@ -150,15 +154,31 @@ html, body {
 }
 #live-toast.show { opacity: 1; transform:translateX(-50%) translateY(0); }
 
+/* ── 타로 카드 3D 뒤집기 복원 ── */
 .tarot-pick-container { display: flex; justify-content: center; gap: 8px; margin: 40px 0; perspective: 1000px; }
 .tarot-pick-card {
-    width: 65px; height: 110px; background: linear-gradient(135deg, #2D1B4D, #4C1D95); 
-    border: 2px solid var(--unicorn-main); border-radius: 8px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 24px; transition: 0.3s;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    width: 65px; height: 110px; position: relative; cursor: pointer; transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-radius: 8px;
 }
-.tarot-pick-card:hover { transform: translateY(-10px); border-color: var(--unicorn-light); }
+.tarot-pick-card:hover { transform: translateY(-10px); }
+.tarot-pick-card.flipped {
+    transform: rotateY(180deg) scale(1.6) translateY(-20px);
+    z-index: 100; box-shadow: 0 20px 50px rgba(216, 180, 254, 0.8);
+}
+.tarot-pick-card.fade-out { opacity: 0; transform: scale(0.5) translateY(100px); pointer-events: none; }
+.tarot-face, .tarot-back {
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+}
+.tarot-back {
+    background: linear-gradient(135deg, #2D1B4D, #4C1D95); border: 2px solid var(--unicorn-main);
+}
+.tarot-back::after { content: '🦄'; font-size: 24px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+.tarot-face { background: #000; transform: rotateY(180deg); border: 2px solid #FBCFE8; }
+.tarot-face img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
 
+/* 타로 스캔 로딩 */
 .tarot-scan-container { position: relative; width: 160px; height: 260px; margin: 0 auto; border-radius: 12px; overflow: hidden; border: 2px solid var(--unicorn-light); box-shadow: 0 0 40px rgba(168,85,247,0.5); }
 .scan-line { position: absolute; left: 0; right: 0; height: 6px; background: #fff; box-shadow: 0 0 30px 15px rgba(216,180,254,0.9); animation: scanAnimation 1.5s infinite linear alternate; }
 @keyframes scanAnimation { 0% { top: -10%; } 100% { top: 110%; } }
@@ -166,6 +186,7 @@ html, body {
 .progress-container { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; margin: 15px 0; overflow: hidden; }
 .progress-fill { height: 100%; width: 0%; background: var(--unicorn-grad); border-radius: 5px; transition: width 0.1s linear; box-shadow: 0 0 10px rgba(216,180,254,0.8); }
 
+/* ── 리뷰 & 목차 ── */
 .review-card {
     background: linear-gradient(145deg, #2D1B4D, #1A1230); border: 1px solid rgba(255,255,255,0.05);
     border-radius: 20px; padding: 24px; margin-bottom: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
@@ -181,24 +202,45 @@ html, body {
 .toc-text { font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.5; }
 
 .mosaic-text {
-    filter: blur(5px);
-    opacity: 0.8;
-    background: rgba(255,255,255,0.1);
-    color: transparent;
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-    user-select: none;
-    border-radius: 4px;
-    padding: 0 4px;
-    display: inline-block;
-    min-width: 80px;
+    filter: blur(5px); opacity: 0.8; background: rgba(255,255,255,0.1); color: transparent;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8); user-select: none; border-radius: 4px; padding: 0 4px; display: inline-block; min-width: 80px;
 }
 .urgent-timer { color: #EF4444; font-weight: 900; animation: urgentPulse 1s infinite alternate; }
 @keyframes urgentPulse { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
 .massive-price { font-size: 46px; line-height: 1; background: linear-gradient(to bottom, #fff, #FBCFE8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 20px rgba(244,114,182,0.8)); margin: 0 10px; }
+
+/* 자체 모달창 스타일 */
+.custom-modal-overlay {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; 
+    align-items:center; justify-content:center; backdrop-filter:blur(5px);
+}
+.custom-modal-box {
+    background:#1A1230; padding:24px; border-radius:20px; border:1px solid #D8B4FE; 
+    text-align:center; min-width:280px; max-width: 80%; box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
 </style>
 </head>
 <body>
 <div id="app">
+
+<!-- 자체 알림창 모달 -->
+<div id="msg-modal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div id="msg-text" style="color:#fff; font-size:16px; margin-bottom:20px; line-height:1.5; word-break:keep-all;"></div>
+        <button onclick="closeModal()" class="btn-3d-unicorn" style="padding:12px; font-size:15px;">확인</button>
+    </div>
+</div>
+
+<!-- 자체 컨펌 모달 (이메일 오기입 체크용) -->
+<div id="confirm-modal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div id="confirm-text" style="color:#fff; font-size:16px; margin-bottom:20px; line-height:1.5; word-break:keep-all;"></div>
+        <div style="display:flex; gap:10px;">
+            <button onclick="closeConfirm(false)" style="flex:1; padding:12px; border-radius:12px; background:#2D1B4D; border:1px solid #64748B; color:#CBD5E1; cursor:pointer; font-weight:700;">아니요</button>
+            <button onclick="closeConfirm(true)" class="btn-3d-unicorn" style="flex:1; padding:12px; font-size:15px; border-radius:12px;">네, 맞아요</button>
+        </div>
+    </div>
+</div>
 
 <div id="live-toast">방금 '김**'님이 속마음을 확인하셨어요! 🦄</div>
 
@@ -257,9 +299,9 @@ html, body {
     <div class="step-progress-bar">
         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
             <span id="step-label" style="font-size:12px; color:var(--unicorn-light);">정보 입력</span>
-            <span id="step-pct" style="font-size:14px; font-weight:700;">20%</span>
+            <span id="step-pct" style="font-size:14px; font-weight:700;">33%</span>
         </div>
-        <div class="step-bar-track"><div class="step-bar-fill" id="step-bar-fill" style="width:20%;"></div></div>
+        <div class="step-bar-track"><div class="step-bar-fill" id="step-bar-fill" style="width:33%;"></div></div>
     </div>
 
     <div style="padding:40px 24px;">
@@ -271,20 +313,6 @@ html, body {
         </div>
 
         <div class="step-card" id="step-2" style="display:none;">
-            <h2 class="title-black" style="font-size:26px; margin-bottom:10px;">당신의 생일은?</h2>
-            <p style="color:var(--text-sub); margin-bottom:30px;">정확한 사주 기반 분석을 위해 필요해요.</p>
-            <label class="lbl">생년월일 (8자리)</label>
-            <input class="inp" id="i-birth" type="tel" placeholder="예: 19950508" maxlength="8">
-            <div style="margin-top:20px;">
-                <label class="lbl">양력/음력</label>
-                <div class="radio-row">
-                    <div class="rb on" id="l-y" onclick="pickL('양력')">양력</div>
-                    <div class="rb" id="l-n" onclick="pickL('음력')">음력</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="step-card" id="step-3" style="display:none;">
             <h2 class="title-black" style="font-size:26px; margin-bottom:10px;">상대방은 누구인가요?</h2>
             <p style="color:var(--text-sub); margin-bottom:30px;">그 사람을 깊게 떠올리며 입력해주세요.</p>
             <div style="margin-bottom:15px;">
@@ -298,28 +326,14 @@ html, body {
                     <option value="짝사랑">내가 짝사랑 중</option>
                     <option value="연애">달달하게 연애 중</option>
                     <option value="권태기">아슬아슬한 권태기</option>
-                    <option value="이별">헤어진 사이</option>
+                    <option value="이별">헤어진 사이 (재회 희망)</option>
                     <option value="친구">그냥 친구 사이</option>
                 </select>
             </div>
         </div>
 
-        <div class="step-card" id="step-4" style="display:none;">
-            <h2 class="title-black" style="font-size:26px; margin-bottom:10px;">상대방의 생일은?</h2>
-            <p style="color:var(--text-sub); margin-bottom:30px;">모르신다면 대략적인 연도라도 좋아요.</p>
-            <label class="lbl">생년월일 (8자리)</label>
-            <input class="inp" id="p-birth" type="tel" placeholder="예: 19941225" maxlength="8">
-            <div style="margin-top:20px;">
-                <label class="lbl">양력/음력</label>
-                <div class="radio-row">
-                    <div class="rb on" id="pl-y" onclick="pickPL('양력')">양력</div>
-                    <div class="rb" id="pl-n" onclick="pickPL('음력')">음력</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="step-card" id="step-5" style="display:none;">
-            <h2 class="title-black" style="font-size:26px; margin-bottom:10px;">결과를 어디로 보내드릴까요?</h2>
+        <div class="step-card" id="step-3" style="display:none;">
+            <h2 class="title-black" style="font-size:26px; margin-bottom:10px;">결과를 어디로 보낼까요?</h2>
             <p style="color:var(--text-sub); margin-bottom:30px;">분석된 비밀 리포트가 전송됩니다.</p>
             <label class="lbl">이메일 주소</label>
             <input class="inp" id="i-email" type="email" placeholder="example@email.com">
@@ -334,7 +348,7 @@ html, body {
 
 <div id="p_tarot" class="page" style="align-items:center; justify-content:center; text-align:center;">
     <h2 class="title-black text-unicorn-3d" style="font-size:28px; margin-bottom:15px;">그 사람을 깊게 생각하며<br>카드 1장을 선택하세요</h2>
-    <p style="color:var(--text-sub); font-size:14px; margin-bottom:30px;"><span id="t-user-name" style="color:var(--unicorn-light);font-weight:700;"></span>님과 그 사람의 무의식이 연결됩니다.</p>
+    <p style="color:var(--text-sub); font-size:14px; margin-bottom:30px;"><span id="t-user-name" style="color:var(--unicorn-light);font-weight:700;"></span>님의 직관이 그 사람의 무의식과 연결됩니다.</p>
     
     <div class="tarot-pick-container" id="tarot-board">
         <!-- JS 동적 생성 -->
@@ -355,7 +369,7 @@ html, body {
         </div>
         <div style="margin-top:20px; background:rgba(0,0,0,0.4); padding:20px; border-radius:20px; border:1px solid rgba(255,255,255,0.05);">
             <div id="t-step1" style="display:flex; gap:16px; padding:8px; color:var(--text-mut); font-weight:700; transition:all 0.3s;"><div class="step-dot" style="width:24px;text-align:center;border-radius:50%;background:rgba(255,255,255,0.1);">❤️</div><span>상대방 속마음 주파수 동기화</span></div>
-            <div id="t-step2" style="display:flex; gap:16px; padding:8px; color:var(--text-mut); font-weight:700; transition:all 0.3s; margin-top:8px;"><div class="step-dot" style="width:24px;text-align:center;border-radius:50%;background:rgba(255,255,255,0.1);">🔮</div><span>사주 궁합 교차 검증 중</span></div>
+            <div id="t-step2" style="display:flex; gap:16px; padding:8px; color:var(--text-mut); font-weight:700; transition:all 0.3s; margin-top:8px;"><div class="step-dot" style="width:24px;text-align:center;border-radius:50%;background:rgba(255,255,255,0.1);">🔮</div><span>무의식 깊은 곳 교차 분석</span></div>
             <div id="t-step3" style="display:flex; gap:16px; padding:8px; color:var(--text-mut); font-weight:700; transition:all 0.3s; margin-top:8px;"><div class="step-dot" style="width:24px;text-align:center;border-radius:50%;background:rgba(255,255,255,0.1);">✨</div><span>결과 분석 완료!</span></div>
         </div>
     </div>
@@ -379,8 +393,8 @@ html, body {
             <!-- 동적으로 생성되는 보이는 해설 -->
             <div style="text-align:left; font-size:15px; color:#fff; line-height:1.6; margin-bottom:20px;" id="result-clear-text"></div>
             
-            <!-- 블러/모자이크 처리된 결정적 비밀 (여백 늘림) -->
-            <div style="text-align:left; font-size:15px; line-height:1.8; background:rgba(0,0,0,0.3); padding:20px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+            <!-- 블러/모자이크 처리된 결정적 비밀 -->
+            <div style="text-align:left; font-size:15px; line-height:1.8; background:rgba(0,0,0,0.3); padding:24px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="color:#A855F7; font-weight:700; margin-bottom:12px; font-size:16px;">🔒 숨겨진 무의식의 비밀</div>
                 <div id="result-blur-text" style="color:rgba(255,255,255,0.8);">
                     <!-- JS에서 그라데이션 블러 텍스트 주입 -->
@@ -404,17 +418,17 @@ html, body {
     </div>
 
     <!-- 배경 그라데이션 이어짐 -->
-    <div style="background: linear-gradient(to bottom, transparent, rgba(216,180,254,0.08), rgba(168,85,247,0.1), rgba(216,180,254,0.08), transparent); padding: 60px 20px; text-align:center;">
+    <div style="background: linear-gradient(to bottom, transparent, rgba(216,180,254,0.08), rgba(168,85,247,0.1), rgba(216,180,254,0.08), transparent); padding: 80px 20px; text-align:center;">
         <div style="font-size:22px; color:var(--text-sub); line-height:1.7;">
             혼자 앓던 그 답답함,<br>
             <span style="color:var(--unicorn-light); font-weight:700; font-size:26px;">속마음을 알면 길이 보입니다.</span>
         </div>
     </div>
 
-    <!-- 타로카드 3장 강조 파트 추가 -->
+    <!-- 타로카드 3장 강조 파트 -->
     <div class="section-padding" style="text-align:center; padding-top:40px; padding-bottom:60px;">
         <div class="title-serif" style="font-size:32px; color:#fff; line-height:1.4;">
-            <span class="text-unicorn-3d" style="font-size:46px; font-family:'Black Han Sans', sans-serif; display:block; margin-bottom:8px;">타로카드 3장</span>으로 보는<br>
+            <span class="text-super-neon" style="font-size:52px; font-family:'Black Han Sans', sans-serif; display:block; margin-bottom:12px; filter: drop-shadow(0 0 15px rgba(244,114,182,0.9));">타로카드 3장</span>으로 보는<br>
             궁금한 연애흐름
         </div>
         <p style="margin-top:20px; color:var(--text-sub); font-size:16px;">과거, 현재, 미래를 관통하는 압도적 디테일</p>
@@ -424,8 +438,8 @@ html, body {
     <div class="section-padding" style="padding-top:0;">
         <div class="toc-container">
             <div style="text-align:center; margin-bottom:50px;">
-                <div class="title-serif text-unicorn-3d" style="font-size:32px; margin-bottom:12px;">타로카드 3장으로<br>모든 궁금증 해결</div>
-                <div style="font-size:15px; color:rgba(255,255,255,0.8);">타로카드로 보는<br>나만의 연애 지침서</div>
+                <div class="title-serif text-unicorn-3d" style="font-size:32px; margin-bottom:12px;">이 리포트 하나로<br>모든 궁금증 해결</div>
+                <div style="font-size:15px; color:rgba(255,255,255,0.8);">마스터의 노하우가 결합된<br>압도적 디테일의 연애 지침서</div>
             </div>
             
             <div class="toc-chapter">
@@ -436,9 +450,9 @@ html, body {
             </div>
             <div class="toc-chapter">
                 <div style="display:inline-block; background:var(--pink-btn); color:#fff; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:700; margin-bottom:12px;">Chapter 2</div>
-                <div class="title-serif" style="font-size:20px; color:#fff; margin-bottom:16px;">두 사람의 궁합과 인연줄</div>
-                <div class="toc-item"><div class="toc-check">✔️</div><div class="toc-text">사주로 보는 본질적인 궁합 점수</div></div>
-                <div class="toc-item"><div class="toc-check">✔️</div><div class="toc-text">서로에게 치명적으로 끌리는 포인트</div></div>
+                <div class="title-serif" style="font-size:20px; color:#fff; margin-bottom:16px;">서로가 원하는 진짜 관계</div>
+                <div class="toc-item"><div class="toc-check">✔️</div><div class="toc-text">그 사람이 원하는 이상적인 연애의 모습</div></div>
+                <div class="toc-item"><div class="toc-check">✔️</div><div class="toc-text">서로에게 치명적으로 끌리는 매력 포인트</div></div>
             </div>
             <div class="toc-chapter">
                 <div style="display:inline-block; background:var(--pink-btn); color:#fff; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:700; margin-bottom:12px;">Chapter 3</div>
@@ -476,10 +490,10 @@ html, body {
         </div>
     </div>
 
-    <!-- 마스터 어필 & 볼 준비 되셨나요 추가 -->
+    <!-- 마스터 어필 & 볼 준비 되셨나요 -->
     <div class="section-padding" style="text-align:center; padding-top:40px;">
         <div style="font-size:18px; color:var(--unicorn-light); font-weight:700; margin-bottom: 20px;">
-            7년차 타로마스터가 속시원히 털어주는 타로해석
+            7년차 타로마스터가 속시원히 털어주는 즉문즉답 타로해석
         </div>
         <div class="title-black text-super-neon" style="font-size:46px; margin-bottom:20px; line-height:1.4;">
             볼 준비 되셨나요?
@@ -489,14 +503,14 @@ html, body {
         </div>
     </div>
 
-    <div style="height: 220px;"></div>
+    <div style="height: 240px;"></div>
 
-    <!-- 하단 고정 결제 바 (할인 마감 긴박하게 + 가격 강조) -->
+    <!-- 하단 고정 결제 바 -->
     <div style="position:fixed; bottom:0; left:0; right:0; max-width:430px; margin:0 auto; padding:20px 20px 32px; background:linear-gradient(to top, rgba(15,10,30,1) 85%, transparent); z-index:100; text-align:center;">
         
         <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:12px; background:rgba(239, 68, 68, 0.15); border:1px solid rgba(239, 68, 68, 0.4); padding:6px 16px; border-radius:30px; width:fit-content; margin: 0 auto 16px;">
             <span class="urgent-timer">🔥 할인 종료 임박!</span>
-            <div id="countdown" style="font-family:'Black Han Sans', sans-serif; font-size:18px; color:#fff;">09:59:99</div>
+            <div id="countdown" style="font-family:'Black Han Sans', sans-serif; font-size:20px; color:#fff;">09:59:99</div>
         </div>
 
         <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:16px;">
@@ -517,18 +531,37 @@ html, body {
 
 <script src="https://js.tosspayments.com/v2/standard"></script>
 <script>
+// ⚙️ 자체 모달 로직 (alert/confirm 대체)
+var customResolve = null;
+function showModal(text) {
+    document.getElementById('msg-text').innerHTML = text;
+    document.getElementById('msg-modal').style.display = 'flex';
+}
+function closeModal() {
+    document.getElementById('msg-modal').style.display = 'none';
+}
+function showConfirm(text, callback) {
+    document.getElementById('confirm-text').innerHTML = text;
+    document.getElementById('confirm-modal').style.display = 'flex';
+    customResolve = callback;
+}
+function closeConfirm(isYes) {
+    document.getElementById('confirm-modal').style.display = 'none';
+    if(customResolve) customResolve(isYes);
+}
+
 // ⚙️ 기본 설정
 var CONFIG = {
-    TOSS_CLIENT_KEY: 'live_ck_EP59LybZ8BlBGE2RMMm4V6GYo7pR', // 발급받은 실제 Client Key로 변경
-    PRODUCT_NAME: '유니콘타로 상대방 속마음 정밀 분석',
+    TOSS_CLIENT_KEY: 'live_ck_EP59LybZ8BlBGE2RMMm4V6GYo7pR', 
+    PRODUCT_NAME: '유니콘타로 상대방 속마음',
     PRICE: 990, 
     SUCCESS_URL: 'https://ahnty5358-create.github.io/tarotaicode/success.html',
     FAIL_URL: 'https://ahnty5358-create.github.io/tarotaicode/fail.html'
 };
 
-var S = { name:'', birth:'', lunar:'양력', pName:'', pRel:'썸', pBirth:'', pLunar:'양력', email:'', step:1, pickedCardId: 1 };
+var S = { name:'', pName:'', pRel:'썸', email:'', step:1, pickedCardId: 1 };
 
-// ── 타로 카드 데이터 (당신 대신 uName으로 대체) ──
+// ── 타로 카드 데이터 ──
 var tarotDeck = [
     { id:1, img: 'https://ahnty5358-create.github.io/tarot-cards/01_TheMagician.png', name: '마법사', text: '{pName}님은 {uName}님에게 강한 호기심과 묘한 매력을 느끼고 있어요. 지금 관계의 주도권을 쥐고 싶어 하며, 어떻게 다가갈지 긍정적인 방향으로 타이밍을 재고 있는 중입니다.' },
     { id:2, img: 'https://ahnty5358-create.github.io/tarot-cards/02_TheHighPriestess.png', name: '고위 여사제', text: '{pName}님은 속마음을 철저히 감추고 있어요. 겉으로는 차갑거나 무관심해 보일 수 있지만, 무의식 속에서는 {uName}님에 대한 생각이 끊이지 않고 복잡하게 얽혀있습니다.' },
@@ -537,7 +570,7 @@ var tarotDeck = [
     { id:5, img: 'https://ahnty5358-create.github.io/tarot-cards/05_TheHierophant.png', name: '교황', text: '가벼운 만남이나 충동적인 감정보다는, 진지하고 신뢰할 수 있는 관계로 발전하고 싶어 하는 보수적이고 진중한 마음이 {pName}님 무의식에 자리 잡고 있습니다.' },
     { id:6, img: 'https://ahnty5358-create.github.io/tarot-cards/06_TheLovers.png', name: '연인', text: '{pName}님은 {uName}님에게 걷잡을 수 없는 육체적, 정신적 끌림을 동시에 느끼고 있어요. 마음의 문은 이미 활짝 열려 있으며, 강력한 호감이 흐르고 있습니다.' },
     { id:7, img: 'https://ahnty5358-create.github.io/tarot-cards/07_TheChariot.png', name: '전차', text: '{pName}님의 마음은 현재 꽤 조급해 보입니다. 장애물이 있더라도 다 뚫고 직진해서 {uName}님에게 다가오고 싶어 하는 강렬한 돌진의 에너지가 느껴집니다.' },
-    { id:8, img: 'https://ahnty5358-create.github.io/tarot-cards/08_Strength.png', name: '힘', text: '{pName}님은 큰 인내심을 가지고 상황을 조심스레 지켜보고 있어요. 섣불리 행동해서 {uName}님과의 관계를 망치고 싶지 않아 스스로 감정을 부드럽게 통제하고 있습니다.' },
+    { id:8, img: 'https://ahnty5358-create.github.io/tarot-cards/08_Strength.png', name: '힘', text: '{pName}님은 큰 인내심을 가지고 상황을 지켜보고 있어요. 섣불리 행동해서 {uName}님과의 관계를 망치고 싶지 않아 스스로 감정을 부드럽게 통제하고 있습니다.' },
     { id:9, img: 'https://ahnty5358-create.github.io/tarot-cards/09_TheHermit.png', name: '은둔자', text: '지금 {pName}님은 혼자만의 시간과 생각 정리가 필요해 약간 거리를 두고 있는 상태일 뿐, 결코 {uName}님이라는 사람 자체가 싫거나 마음이 떠난 것은 아닙니다.' }
 ];
 
@@ -545,12 +578,15 @@ var tarotDeck = [
 var reviewData = [
     { emoji: '👩', name: 'dan***님 · 짝사랑', rate: '★★★★★', text: '"짝사랑 상대가 절 친구로만 생각하는 줄 알았는데, 분석 결과 보고 용기내서 연락했다가 사귀게 됐어요! 진짜 소름 돋아요."' },
     { emoji: '👧', name: 'lee***님 · 이별(재회)', rate: '★★★★★', text: '"헤어진 남자친구 속마음이 궁금해서 봤는데, 나중에 연락와서 하는 말이 리포트 내용이랑 토씨 하나 안 틀리고 똑같아서 무서웠어요."' },
-    { emoji: '👱‍♀️', name: 'cho***님 · 썸', rate: '★★★★★', text: '"맨날 연락은 하는데 만나자는 말을 안 해서 답답했거든요. 황제 카드 설명 듣고 제가 먼저 찔러보니까 바로 고백하네요 ㅋㅋㅋ"' },
-    { emoji: '👩‍🦰', name: 'par***님 · 권태기', rate: '★★★★★', text: '"요즘 뜸해져서 마음 식은 줄 알고 엄청 울었는데... 은둔자 카드 해설 보고 맘 편히 기다렸더니 다시 예전처럼 돌아왔어요 ㅠㅠ"' },
+    { emoji: '👱‍♀️', name: 'cho***님 · 썸', rate: '★★★★★', text: '"맨날 연락은 하는데 만나자는 말을 안 해서 답답했거든요. 해설 보고 제가 먼저 찔러보니까 바로 고백하네요 ㅋㅋㅋ"' },
+    { emoji: '👩‍🦰', name: 'par***님 · 권태기', rate: '★★★★★', text: '"요즘 뜸해져서 마음 식은 줄 알고 엄청 울었는데... 맘 편히 기다렸더니 다시 예전처럼 돌아왔어요 ㅠㅠ"' },
     { emoji: '👩‍💼', name: 'kim***님 · 친구', rate: '★★★★★', text: '"남사친 속마음이 이럴 줄은 진짜 상상도 못했어요. 어쩐지 술만 마시면 그렇게 연락을 하더라니... 가성비 짱입니다!"' },
     { emoji: '👱‍♂️', name: 'jun***님 · 이별(재회)', rate: '★★★★★', text: '"전여친이 저한테 미련 하나도 없는 줄 알았는데 리포트에서 밤마다 제 인스타 본다고 해서 반신반의 했거든요? 근데 진짜 어제 새벽에 연락왔습니다 미쳤음"' },
     { emoji: '👧', name: 'soo***님 · 썸', rate: '★★★★★', text: '"상대방이 바라는 결정적 타이밍이 언제인지 모자이크 돼있어서 결제했는데 돈이 하나도 안 아깝네요. 진짜 딱 그 날짜에 만나자고 연락옴ㄷㄷ"' },
-    { emoji: '👩‍🦳', name: 'hwa***님 · 짝사랑', rate: '★★★★★', text: '"진짜 제가 먼저 연락안하면 평생 안할 사람인줄알았는데 속마음알고나서 제가 타이밍 맞춰 다가가니 확 넘어오네요 ㅎㅎ 마스터님 최고!"'}
+    { emoji: '👩‍🦳', name: 'hwa***님 · 짝사랑', rate: '★★★★★', text: '"진짜 제가 먼저 연락안하면 평생 안할 사람인줄알았는데 속마음알고나서 제가 타이밍 맞춰 다가가니 확 넘어오네요 ㅎㅎ 마스터님 최고!"'},
+    { emoji: '👱‍♀️', name: 'jin***님 · 짝사랑', rate: '★★★★★', text: '"와 진짜 소름... 그 사람이 절 어떻게 생각하는지 너무 정확해서 뼈맞았어요. 덕분에 어떻게 다가가야할지 감 잡았습니다 ㅠㅠ!"'},
+    { emoji: '👩‍🦱', name: 'yoo***님 · 연애', rate: '★★★★★', text: '"남친이 요새 바빠서 연락 안되는줄 알았는데 무의식 스캔 보고 진짜 머리 한대 맞은 기분... 관계 회복에 엄청 도움됐습니다!!"'},
+    { emoji: '👩', name: 'hyo***님 · 썸', rate: '★★★★★', text: '"이 가격에 이 퀄리티 실화인가요;; 다른곳에서 5만원 주고 본것보다 훨씬 자세하고 소름돋게 잘맞아요 ㅋㅋㅋㅋ"'}
 ];
 
 function renderReviews() {
@@ -561,70 +597,93 @@ function renderReviews() {
         '<div class="review-text">' + r.text + '</div></div>'
     ).join('');
     
-    // 앞부분 리뷰 (3개)
+    // 앞부분 리뷰 (3~4개 랜덤하게)
     var c1 = document.getElementById('reviews-container-1');
     if(c1) c1.innerHTML = generateHtml(reviewData.slice(0,3));
     
-    // 뒷부분 리뷰 (전체 반복)
+    // 뒷부분 리뷰 (전체)
     var c2 = document.getElementById('reviews-container-2');
     if(c2) c2.innerHTML = generateHtml(reviewData);
 }
 renderReviews();
 
 // ── 폼 & 진행 스텝 제어 ──
-function startStep(n) { showP('p_input'); updateStepUI(); }
-
-function updateStepUI() {
-    document.querySelectorAll('.step-card').forEach(c => c.style.display = 'none');
-    document.getElementById('step-' + S.step).style.display = 'block';
-    
-    var pct = (S.step / 5) * 100;
-    document.getElementById('step-bar-fill').style.width = pct + '%';
-    document.getElementById('step-pct').textContent = pct + '%';
-    document.getElementById('btn-prev').style.display = S.step > 1 ? 'block' : 'none';
-    document.getElementById('btn-next').textContent = S.step === 5 ? '타로 뽑으러 가기 🔮' : '다음으로 →';
-}
-
-function nextStep() {
-    if (S.step === 1) {
-        S.name = document.getElementById('i-name').value.trim();
-        if(!S.name) return alert('이름을 입력해주세요.');
-        document.getElementById('t-user-name').textContent = S.name; 
-    }
-    if (S.step === 2) {
-        S.birth = document.getElementById('i-birth').value;
-        if(S.birth.length < 8) return alert('생년월일 8자리를 입력해주세요.');
-    }
-    if (S.step === 3) {
-        S.pName = document.getElementById('p-name').value.trim();
-        S.pRel = document.getElementById('p-rel').value;
-        if(!S.pName) return alert('상대방의 호칭을 입력해주세요.');
-    }
-    if (S.step === 4) {
-        S.pBirth = document.getElementById('p-birth').value;
-    }
-    if (S.step === 5) {
-        S.email = document.getElementById('i-email').value.trim();
-        if(!S.email || !S.email.includes('@')) return alert('올바른 이메일을 입력해주세요.');
-    }
-    
-    if (S.step < 5) {
-        S.step++; updateStepUI(); window.scrollTo(0,0);
-    } else {
-        initTarotBoard(); showP('p_tarot');
-    }
-}
-
-function prevStep() { if (S.step > 1) { S.step--; updateStepUI(); window.scrollTo(0,0); } }
-
 function showP(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0,0);
 }
 
-function pickL(l) { S.lunar = l; document.getElementById('l-y').className = 'rb'+(l==='양력'?' on':''); document.getElementById('l-n').className = 'rb'+(l==='음력'?' on':''); }
-function pickPL(l) { S.pLunar = l; document.getElementById('pl-y').className = 'rb'+(l==='양력'?' on':''); document.getElementById('pl-n').className = 'rb'+(l==='음력'?' on':''); }
+function startStep(n) { showP('p_input'); updateStepUI(); }
+
+function updateStepUI() {
+    document.querySelectorAll('.step-card').forEach(c => c.style.display = 'none');
+    document.getElementById('step-' + S.step).style.display = 'block';
+    
+    var pct = (S.step / 3) * 100;
+    document.getElementById('step-bar-fill').style.width = pct + '%';
+    document.getElementById('step-pct').textContent = Math.floor(pct) + '%';
+    document.getElementById('btn-prev').style.display = S.step > 1 ? 'block' : 'none';
+    document.getElementById('btn-next').textContent = S.step === 3 ? '타로 뽑으러 가기 🔮' : '다음으로 →';
+}
+
+function nextStep() {
+    if (S.step === 1) {
+        S.name = document.getElementById('i-name').value.trim();
+        if(!S.name) return showModal('이름을 입력해주세요.');
+        document.getElementById('t-user-name').textContent = S.name; 
+    }
+    if (S.step === 2) {
+        S.pName = document.getElementById('p-name').value.trim();
+        S.pRel = document.getElementById('p-rel').value;
+        if(!S.pName) return showModal('상대방의 호칭을 입력해주세요.');
+    }
+    if (S.step === 3) {
+        var email = document.getElementById('i-email').value.trim();
+        if(!email || !email.includes('@')) return showModal('올바른 이메일을 입력해주세요.');
+        
+        // 이메일 오기입 체크 로직
+        var domainFixes = {
+            'naver.con':'naver.com', 'naver.ocm':'naver.com', 'naver.cmo':'naver.com',
+            'navr.com':'naver.com', 'naevr.com':'naver.com',
+            'gmail.con':'gmail.com', 'gmail.ocm':'gmail.com', 'gmail.cmo':'gmail.com',
+            'gmai.com':'gmail.com', 'gmial.com':'gmail.com', 'gmal.com':'gmail.com',
+            'kakao.con':'kakao.com', 'kakao.ocm':'kakao.com',
+            'daum.con':'daum.net', 'daum.nte':'daum.net', 'daum.et':'daum.net',
+            'hanmail.con':'hanmail.net', 'hanmail.nte':'hanmail.net',
+            'nate.con':'nate.com', 'nate.ocm':'nate.com',
+            'hotmail.con':'hotmail.com', 'hotmail.ocm':'hotmail.com',
+            'yahoo.con':'yahoo.com', 'yahoo.ocm':'yahoo.com'
+        };
+        var parts = email.split('@');
+        var domain = parts[1] ? parts[1].toLowerCase() : '';
+        
+        if (domainFixes[domain]) {
+            var corrected = parts[0] + '@' + domainFixes[domain];
+            showConfirm(`혹시 이메일이<br><strong style="color:var(--unicorn-light); font-size:18px;">${corrected}</strong><br>맞으신가요?`, function(isYes) {
+                if(isYes) {
+                    S.email = corrected;
+                    document.getElementById('i-email').value = corrected;
+                    proceedToTarot();
+                }
+            });
+            return; // 컨펌 대기
+        }
+        S.email = email;
+    }
+    
+    if (S.step < 3) {
+        S.step++; updateStepUI(); window.scrollTo(0,0);
+    } else {
+        proceedToTarot();
+    }
+}
+
+function proceedToTarot() {
+    initTarotBoard(); showP('p_tarot');
+}
+
+function prevStep() { if (S.step > 1) { S.step--; updateStepUI(); window.scrollTo(0,0); } }
 
 // ── 타로 카드 뽑기 ──
 var isTarotPicked = false;
@@ -691,7 +750,7 @@ function selectTarot(element, cardId) {
     }, 1000);
 }
 
-// ── 결과 미리보기 빌드 (유저 이름 변환 완벽 적용) ──
+// ── 결과 미리보기 빌드 ──
 function buildPage2(cardData) {
     var uName = S.name;
     var pName = S.pName;
@@ -732,28 +791,29 @@ function buildPage2(cardData) {
     
     document.getElementById('result-clear-text').innerHTML = `
         <div style="font-size:16px; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">
-            <span style="font-size:12px; color:var(--unicorn-light);">🔮 ${uName}님이 뽑은 카드의 기본 해석</span><br>
+            <span style="font-size:12px; color:var(--unicorn-light);">🔮 ${uName}님이 뽑은 카드의 해석</span><br>
             <strong>${baseText}</strong>
         </div>
         <div style="font-size:15px; color:#FBCFE8; line-height:1.6;">
-            <span style="font-size:12px; color:#A5F3FC;">💌 현재 [${rel}] 관계 맞춤 풀이</span><br>
+            <span style="font-size:12px; color:#A5F3FC;">💌 현재 [${rel}] 관계에서는 ...</span><br>
             ${relText}
         </div>
     `;
     
     // 블러 및 그라데이션 페이드 아웃 처리된 결정적 텍스트
     document.getElementById('result-blur-text').innerHTML = `
-        하지만 결정적인 순간! ${pName}님이 ${blurContext} 바로 <span class="mosaic-text">결과지확인</span>입니다.<br> 
+        하지만, ${pName}님이 ${blurContext} 바로 <span class="mosaic-text">결과지확인</span>입니다.<br> 
         이때 ${pName}님이 먼저 <span class="mosaic-text">모자이크텍스트</span> 행동을 보일 가능성이 매우 높으며, ${uName}님은 절대 <span class="mosaic-text">모자이크</span> 하시면 안 됩니다.
         
         <div style="margin-top:16px; font-size:15px; color:rgba(255,255,255,0.7); filter:blur(4px); -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); line-height:1.8;">
             게다가 다가오는 [모자이크] 시기에는 두 사람의 관계를 완전히 뒤바꿀 만한 충격적인 계기가 발생합니다. ${pName}님의 무의식 깊은 곳에 자리 잡은 진짜 본심은 사실 ${uName}님을 향한 강한 [모자이크]였으며, 이를 확인하게 되는 순간 그동안의 오해와 갈등이 한순간에 눈 녹듯 사라지게 될 것입니다. 타로가 읽어낸 이 모든 비밀스러운 이야기를 지금 바로 확인해보세요.
+            더불어 앞으로 3개월 간의 가장 중요한 연락운과 타이밍까지 모두 담았습니다.
         </div>
     `;
 }
 
-// ── 실시간 뷰어 알림 (점진적 증가 로직) ──
-var viewerCount = parseInt(localStorage.getItem('unicorn_viewer_count'));
+// ── 실시간 뷰어 알림 (점진적 증가 로직 유지) ──
+var viewerCount = parseInt(localStorage.getItem('unicorn_viewer_count_love'));
 if (isNaN(viewerCount) || viewerCount < 499) {
     viewerCount = 499;
 }
@@ -779,7 +839,7 @@ function triggerRandomToast() {
             
             // 1~3명씩 점진적 증가 후 스토리지 저장
             viewerCount += Math.floor(Math.random() * 3) + 1;
-            localStorage.setItem('unicorn_viewer_count', viewerCount);
+            localStorage.setItem('unicorn_viewer_count_love', viewerCount);
             initViewerCount();
         }
     }
@@ -824,6 +884,7 @@ function generateOrderId() {
 function goPay() {
     var orderId = generateOrderId();
 
+    // 1. 통합형 success/fail 페이지를 위한 세션 저장
     sessionStorage.setItem('unicorn_order', JSON.stringify({
         orderId: orderId,
         theme: 'romance', 
@@ -832,15 +893,12 @@ function goPay() {
         
         name: S.name,
         email: S.email,
-        birth: S.birth,
-        lunar: S.lunar,
         pName: S.pName,
         pRel: S.pRel,
-        pBirth: S.pBirth,
-        pLunar: S.pLunar,
         pickedCardId: S.pickedCardId
     }));
 
+    // 2. 토스페이먼츠 결제창 호출
     try {
         var tossPayments = TossPayments(CONFIG.TOSS_CLIENT_KEY); 
         var payment = tossPayments.payment({ customerKey: TossPayments.ANONYMOUS });
@@ -856,19 +914,13 @@ function goPay() {
             failUrl: CONFIG.FAIL_URL
         }).catch(function(error) {
             if (error.code !== 'USER_CANCEL') {
-                alert('결제 오류: ' + error.message);
+                showModal('결제 오류가 발생했습니다.<br>' + error.message);
             }
         });
     } catch(err) {
-        alert('결제 모듈을 불러오지 못했습니다. (' + err.message + ')');
+        showModal('결제 모듈을 불러오지 못했습니다.<br>새로고침 후 다시 시도해주세요.');
     }
 }
-
-['i-birth', 'p-birth'].forEach(id => {
-    var el = document.getElementById(id);
-    if(el) { el.addEventListener('input', function(e) { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }); }
-});
-
 </script>
 </body>
 </html>
